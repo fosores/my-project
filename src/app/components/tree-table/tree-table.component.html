@@ -1,0 +1,12 @@
+<div class="ly-tree-table">
+    <table>
+        <thead>
+            <tr>
+                <th *ngFor="let header of displayedHeaders">{{ header }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-content></ng-content>
+        </tbody>
+    </table>
+</div>
