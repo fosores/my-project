@@ -1,3 +1,10 @@
-<ly-tree-table [headers]="headers" >
-    <ly-tree-table-item [data]="data" [keyDefinitions]="['module', 'services','link']"></ly-tree-table-item>
+<ly-tree-table [headers]="headers" [actionHeader]="'Accion'">
+  <ly-tree-table-item
+    [childPropertyName]="'children'"
+    [data]="data"
+    [keyDefinitions]="['module', 'services', 'link']"
+    [widthDefinitions]="{ module: '100px', services: '500px', link: '50px'}"
+  >
+    ></ly-tree-table-item
+  >
 </ly-tree-table>

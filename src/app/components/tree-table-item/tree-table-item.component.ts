@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 
 @Component({
   selector: 'ly-tree-table-item',
@@ -8,13 +14,16 @@ import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/
   standalone: true,
   imports: [CommonModule],
 })
-export class TreeTableItemComponent implements OnInit{
-  @ViewChild("template", { static: true }) template: any;
+export class TreeTableItemComponent implements OnInit {
+  @ViewChild('template', { static: true }) template: any;
 
   @Input() data: any[] = [];
   @Input() keyDefinitions: string[] = [];
   @Input() children: any[] = [];
-  expandedItems: Set<any> = new Set(); 
+  @Input() childPropertyName: string = 'children';
+  @Input() widthDefinitions: { [key: string]: string } = {}; 
+  expandedItems: Set<any> = new Set();
+  expandedSubLevelItems: Set<any> = new Set();
 
   constructor(private viewContainerRef: ViewContainerRef) {}
 
@@ -26,6 +35,10 @@ export class TreeTableItemComponent implements OnInit{
     return this.expandedItems.has(item);
   }
 
+  isSubLevelExpanded(item: any) {
+    return this.expandedSubLevelItems.has(item);
+  }
+
   expandToggle(item: any) {
     if (this.isExpanded(item)) {
       this.expandedItems.delete(item);
@@ -34,11 +47,11 @@ export class TreeTableItemComponent implements OnInit{
     }
   }
 
-  test(){
-    this.sublevels = !this.sublevels
+  expandSubLevelToggle(item: any) {
+    if (this.isSubLevelExpanded(item)) {
+      this.expandedSubLevelItems.delete(item);
+    } else {
+      this.expandedSubLevelItems.add(item);
+    }
   }
-
-  //test
-  sublevels = false
-
 }

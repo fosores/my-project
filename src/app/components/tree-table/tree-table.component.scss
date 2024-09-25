@@ -1,5 +1,23 @@
-.ly-tree-table{
-  table{
-      width: 100%;
+.ly-tree-table {
+  table {
+    width: 100%;
+  }
+  .ly-tree-table-item {
+    &__row {
+      &--third-level {
+        td {
+          padding: 1px 1px 1px 32px;
+        }
+      }
+    }
+  }
+
+  .ly-tree-table-item__row--first-level td,
+  .ly-tree-table-item__row--second-level td,
+  .ly-tree-table-item__row--third-level td {
+    overflow: hidden; /* Oculta el texto que se desborda */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos al final del texto truncado */
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    box-sizing: border-box; /* Incluye padding y border en el ancho total de la celda */
   }
 }

@@ -1,12 +1,15 @@
-<div class="tree-table-item">
+<div class="ly-tree-table-item">
   <ng-template #template>
     <ng-container *ngFor="let item of data; let i = index">
-      <tr style="height: 50px">
-        <td *ngFor="let key of keyDefinitions">
+      <tr class="ly-tree-table-item__row--first-level">
+        <td
+          *ngFor="let key of keyDefinitions"
+          [style.width]="widthDefinitions[key]"
+        >
           {{ item[key] }}
         </td>
-        <ng-container *ngIf="item.children?.length">
-          <td>
+        <ng-container *ngIf="item[childPropertyName]?.length">
+          <td style="width: 25px;">
             <button (click)="expandToggle(item)">
               {{ isExpanded(item) ? "-" : "+" }}
             </button>
@@ -14,21 +17,33 @@
         </ng-container>
       </tr>
       <ng-container *ngIf="isExpanded(item)">
-        <ng-container *ngFor="let child of item.children">
-          <tr>
-            <td *ngFor="let childKey of keyDefinitions">
+        <ng-container *ngFor="let child of item[childPropertyName]">
+          <tr class="ly-tree-table-item__row--second-level">
+            <td
+              *ngFor="let childKey of keyDefinitions"
+              [style.width]="widthDefinitions[childKey]"
+            >
               {{ child[childKey] }}
             </td>
-            <ng-container *ngIf="child.children?.length">
+            <ng-container *ngIf="child[childPropertyName]?.length">
               <td>
-                <button (click)="test()">QUE?</button>
+                <button (click)="expandSubLevelToggle(child)">
+                  {{ isSubLevelExpanded(child) ? "-" : "+" }}
+                </button>
               </td>
             </ng-container>
           </tr>
-          <ng-container *ngIf="sublevels">
-            <tr>
-              <td *ngFor="let subLevel of child.children">WAAAA</td>
-            </tr>
+          <ng-container *ngIf="isSubLevelExpanded(child)">
+            <ng-container *ngFor="let subLevel of child[childPropertyName]">
+              <tr class="ly-tree-table-item__row--third-level">
+                <td
+                  *ngFor="let subLevelKey of keyDefinitions"
+                  [style.width]="widthDefinitions[subLevelKey]"
+                >
+                  {{ subLevel[subLevelKey] }}
+                </td>
+              </tr>
+            </ng-container>
           </ng-container>
         </ng-container>
       </ng-container>

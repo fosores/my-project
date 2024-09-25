@@ -8,59 +8,106 @@ import { CommonModule } from '@angular/common';
   templateUrl: './demo.component.html',
   styleUrls: ['./demo.component.scss'],
   standalone: true,
-  imports: [TreeTableComponent, TreeTableItemComponent, CommonModule]
+  imports: [TreeTableComponent, TreeTableItemComponent, CommonModule],
 })
 export class DemoComponent {
   headers: string[] = [
-    "Módulo",
-    "Listado de productos/servicios con comprobantes reportes ó extractos"
+    'Módulo',
+    'Listado de productos/servicios con comprobantes reportes ó extractos',
+    '',
   ];
   data: any[] = [
     {
-      module: "Cuentas",
-      services: "",
+      module: 'primer Nivel',
+      services: '',
       children: [
         {
-          services: "Débito Directo",
-          link: "Consultar",
-          children: ["Nota de Crédito", "Nota de Crédito"],
+          services: 'Segundo Nivel',
+          link: 'Consultar',
+          children: [{ services: 'Tercer Nivel' }],
         },
         {
-          services: "Depósito Tarjetas Banelco",
-          link: "Consultar Modulo",
-          children: ["Adjuntos Pago Proveedores", "Adjuntos Pago Proveedores"],
+          services: 'Depósito Tarjetas Banelco',
+          link: 'Consultar Modulo',
+          children: [{ services: 'Adjuntos proveedores' }],
         },
-        { services: "Débito Inmediato" },
-        { services: "Depósito Tarjetas Banelco", link: "Consultar Modulo" },
+        { services: 'Débito Inmediato' },
+        { services: 'Depósito Tarjetas Banelco', link: 'Consultar Modulo' },
       ],
     },
     {
-      module: "Cuentas 2",
+      module: 'Primer Nivel 2',
       services: null,
       children: [],
     },
     {
-      module: "Cuentas 3",
-      services: "Un service",
+      module: 'Primer Nivel 3',
+      services: 'Un service',
       children: [
         {
-          services: "Débito Directo 3",
-          link: "Consultar",
-          children: ["Nota de Crédito", "Nota de Crédito"],
+          services: 'Segundo Nivel 3',
+          link: 'Consultar',
+          children: [
+            { services: 'Tercer nivel 3' },
+            { services: 'Tercer nivel 3' },
+            { services: 'Tercer nivel 3' },
+            { services: 'Tercer nivel 3' },
+          ],
         },
-        { services: "Débito Inmediato 3" },
-        { services: "Depósito Tarjetas Banelco", link: "Consultar Modulo" },
+        { services: 'Débito Inmediato 3' },
+        { services: 'Depósito Tarjetas Banelco', link: 'Consultar Modulo' },
         {
-          services: "Depósito Tarjetas Banelco 3",
-          link: "Consultar Modulo",
+          services: 'Depósito Tarjetas Banelco 3',
+          link: 'Consultar Modulo',
           children: [
             {
-              services: "Débito Directo 3",
-              link: "Consultar",
-              children: ["Nota de Crédito", "Nota de Crédito"],
+              services: 'Débito Directo 3',
+              link: 'Consultar',
+              children: [
+                {
+                  services: 'Depósito Tarjetas Banelco 3',
+                  link: 'Consultar Modulo',
+                },
+              ],
             },
           ],
         },
+        
+      ],
+    },
+    {
+      module: 'Primer Nivel 4',
+      services: 'Un service',
+      children: [
+        {
+          services: 'Segundo Nivel 4',
+          link: 'Consultar',
+          children: [
+            { services: 'Tercer nivel 4' },
+            { services: 'Tercer nivel 4' },
+            { services: 'Tercer nivel 4' },
+            { services: 'Tercer nivel 4' },
+          ],
+        },
+        { services: 'Débito Inmediato 3' },
+        { services: 'Depósito Tarjetas Banelco', link: 'Consultar Modulo' },
+        {
+          services: 'Depósito Tarjetas Banelco 3',
+          link: 'Consultar Modulo',
+          children: [
+            {
+              services: 'Débito Directo 3',
+              link: 'Consultar',
+              children: [
+                {
+                  services: 'Depósito Tarjetas Banelco 3',
+                  link: 'Consultar Modulo',
+                },
+              ],
+            },
+          ],
+        },
+        
       ],
     },
   ];
