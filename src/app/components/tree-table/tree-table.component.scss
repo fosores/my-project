@@ -1,23 +1,66 @@
 .ly-tree-table {
-  table {
-    width: 100%;
-  }
-  .ly-tree-table-item {
-    &__row {
-      &--third-level {
-        td {
-          padding: 1px 1px 1px 32px;
+  &__table {
+    td,
+    th {
+      &:first-child {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+      &:last-child {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+    &-header {
+      height: 42px;
+      border-top: 1px solid #e1e1e1;
+      border-bottom: 1px solid #e1e1e1;
+      background-color: #ffffff;
+
+      &-row {
+        &-th {
+          font-weight: 700;
+          font-size: 14px;
+          color: #818b95;
         }
       }
     }
   }
 
-  .ly-tree-table-item__row--first-level td,
-  .ly-tree-table-item__row--second-level td,
-  .ly-tree-table-item__row--third-level td {
-    overflow: hidden; /* Oculta el texto que se desborda */
-    text-overflow: ellipsis; /* Agrega puntos suspensivos al final del texto truncado */
-    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
-    box-sizing: border-box; /* Incluye padding y border en el ancho total de la celda */
+  .ly-tree-table-item {
+    &__row {
+      color: #676767;
+      &--first-level {
+        height: 42px;
+        border-top: 1px solid #e1e1e1;
+        border-bottom: 1px solid #e1e1e1;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      &--second-level {
+        height: 28px;
+        border-top: 1px solid #e1e1e1;
+        border-bottom: 1px solid #e1e1e1;
+        font-size: 14px;
+        font-weight: 400;
+      }
+      &--third-level {
+        height: 28px;
+        font-size: 14px;
+        font-weight: 400;
+        td {
+          padding-left: 24px;
+        }
+      }
+      &--expanded {
+        border-bottom: none;
+      }
+      &-action {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: inherit;
+      }
+    }
   }
 }

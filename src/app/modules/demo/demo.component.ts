@@ -12,103 +12,88 @@ import { CommonModule } from '@angular/common';
 })
 export class DemoComponent {
   headers: string[] = [
-    'Módulo',
-    'Listado de productos/servicios con comprobantes reportes ó extractos',
-    '',
+    "Módulo",
+    "Listado de productos/servicios con comprobantes reportes ó extractos",
+    "",
   ];
   data: any[] = [
     {
-      module: 'primer Nivel',
-      services: '',
+      module: "primer Nivel",
       children: [
         {
-          services: 'Segundo Nivel',
-          link: 'Consultar',
-          children: [{ services: 'Tercer Nivel' }],
+          services: "Segundo Nivel",
+          link: "Consultar",
+          children: [{ services: "Tercer Nivel" }],
         },
         {
-          services: 'Depósito Tarjetas Banelco',
-          link: 'Consultar Modulo',
-          children: [{ services: 'Adjuntos proveedores' }],
+          services: "Depósito Tarjetas Banelco",
+          link: "Consultar Modulo",
+          children: [{ services: "Adjuntos proveedores" }],
         },
-        { services: 'Débito Inmediato' },
-        { services: 'Depósito Tarjetas Banelco', link: 'Consultar Modulo' },
+        { services: "Débito Inmediato" },
+        { services: "Depósito Tarjetas Banelco", link: "Consultar Modulo" },
       ],
     },
     {
-      module: 'Primer Nivel 2',
+      module: "Primer Nivel 2",
       services: null,
       children: [],
     },
     {
-      module: 'Primer Nivel 3',
-      services: 'Un service',
+      module: "Primer Nivel 3",
       children: [
         {
-          services: 'Segundo Nivel 3',
-          link: 'Consultar',
+          services: "Segundo Nivel 3",
+          link: "Consultar",
           children: [
-            { services: 'Tercer nivel 3' },
-            { services: 'Tercer nivel 3' },
-            { services: 'Tercer nivel 3' },
-            { services: 'Tercer nivel 3' },
+            { services: "Tercer nivel 3" },
+            { services: "Tercer nivel 3" },
+            { services: "Tercer nivel 3" },
+            { services: "Tercer nivel 3" },
           ],
         },
-        { services: 'Débito Inmediato 3' },
-        { services: 'Depósito Tarjetas Banelco', link: 'Consultar Modulo' },
+        { services: "Débito Inmediato 3" },
+        { services: "Depósito Tarjetas Banelco", link: "Consultar Modulo" },
         {
-          services: 'Depósito Tarjetas Banelco 3',
-          link: 'Consultar Modulo',
+          services: "Depósito Tarjetas Banelco 3",
+          link: "Consultar Modulo",
           children: [
             {
-              services: 'Débito Directo 3',
-              link: 'Consultar',
-              children: [
-                {
-                  services: 'Depósito Tarjetas Banelco 3',
-                  link: 'Consultar Modulo',
-                },
-              ],
+              services: "Débito Directo 3",
             },
           ],
         },
-        
       ],
     },
     {
-      module: 'Primer Nivel 4',
-      services: 'Un service',
+      module: "Primer Nivel 4",
       children: [
         {
-          services: 'Segundo Nivel 4',
-          link: 'Consultar',
+          services: "Segundo Nivel 4",
+          link: "Consultar",
           children: [
-            { services: 'Tercer nivel 4' },
-            { services: 'Tercer nivel 4' },
-            { services: 'Tercer nivel 4' },
-            { services: 'Tercer nivel 4' },
+            { services: "Tercer nivel 4" },
+            { services: "Tercer nivel 4" },
+            { services: "Tercer nivel 4" },
+            { services: "Tercer nivel 4" },
           ],
         },
-        { services: 'Débito Inmediato 3' },
-        { services: 'Depósito Tarjetas Banelco', link: 'Consultar Modulo' },
+        { services: "Débito Inmediato 3" },
+        { services: "Depósito Tarjetas Banelco", link: "Consultar Modulo" },
         {
-          services: 'Depósito Tarjetas Banelco 3',
-          link: 'Consultar Modulo',
+          services: "Depósito Tarjetas Banelco 3",
+          link: "Consultar Modulo",
           children: [
             {
-              services: 'Débito Directo 3',
-              link: 'Consultar',
-              children: [
-                {
-                  services: 'Depósito Tarjetas Banelco 3',
-                  link: 'Consultar Modulo',
-                },
-              ],
+              services: "Débito Directo 3",
             },
           ],
         },
-        
       ],
     },
   ];
+
+  itemClick(event: any) {
+    console.log("Evento Click Demo", event);
+  }
 }

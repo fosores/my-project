@@ -1,11 +1,22 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+export interface ColumnWidthDefinitions {
+  [columnName: string]: string;
+}
+
+export interface TreeTableItem {
+  [key: string]: any;
+  children?: TreeTableItem[];
+}
+
 
 @Component({
   selector: 'ly-tree-table-item',
@@ -15,13 +26,15 @@ import {
   imports: [CommonModule],
 })
 export class TreeTableItemComponent implements OnInit {
-  @ViewChild('template', { static: true }) template: any;
+  @ViewChild("template", { static: true }) template: any;
 
-  @Input() data: any[] = [];
+  @Output() linkClicked = new EventEmitter<any>();
+  @Input() data: TreeTableItem[] = [];
   @Input() keyDefinitions: string[] = [];
-  @Input() children: any[] = [];
-  @Input() childPropertyName: string = 'children';
-  @Input() widthDefinitions: { [key: string]: string } = {}; 
+  @Input() children: TreeTableItem[] = [];
+  @Input() childPropertyName: string = "children";
+  @Input() keyLinkName: string = "link";
+  @Input() widthDefinitions: ColumnWidthDefinitions = {};
   expandedItems: Set<any> = new Set();
   expandedSubLevelItems: Set<any> = new Set();
 
@@ -53,5 +66,13 @@ export class TreeTableItemComponent implements OnInit {
     } else {
       this.expandedSubLevelItems.add(item);
     }
+  }
+
+  getBackgroundColor(index: number): string {
+    return index % 2 !== 0 ? "#ffffff" : "#f3f4f4";
+  }
+
+  onLinkClick(item: any) {
+    this.linkClicked.emit(item);
   }
 }

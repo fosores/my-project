@@ -11,7 +11,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class TreeTableComponent implements OnInit {
   @Input() headers: any[] = [];
-  @Input() actionHeader: string = '';
+  @Input() actionHeader: string = "";
   @Input() data: any[] = [];
   displayedHeaders: any[] = [];
   ngOnInit() {

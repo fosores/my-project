@@ -1,12 +1,12 @@
 <div class="ly-tree-table">
-  <table>
-    <thead>
-      <tr>
-        <th *ngFor="let header of displayedHeaders">{{ header }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-content select="ly-tree-table-item"></ng-content>
-    </tbody>
+  <table class="ly-tree-table__table">
+      <thead class="ly-tree-table__table-header">
+          <tr class="ly-tree-table__table-header-row">
+              <th class="ly-tree-table__table-header-row-th" *ngFor="let header of displayedHeaders">{{ header }}</th>
+          </tr>
+      </thead>
+      <tbody>
+          <ng-content select="ly-tree-table-item"></ng-content>
+      </tbody>
   </table>
 </div>
