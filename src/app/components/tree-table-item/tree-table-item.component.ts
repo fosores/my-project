@@ -17,7 +17,6 @@ export interface TreeTableItem {
   children?: TreeTableItem[];
 }
 
-
 @Component({
   selector: 'ly-tree-table-item',
   templateUrl: './tree-table-item.component.html',
@@ -26,22 +25,24 @@ export interface TreeTableItem {
   imports: [CommonModule],
 })
 export class TreeTableItemComponent implements OnInit {
-  @ViewChild("template", { static: true }) template: any;
+  @ViewChild('template', { static: true }) template: any;
 
   @Output() linkClicked = new EventEmitter<any>();
   @Input() data: TreeTableItem[] = [];
   @Input() keyDefinitions: string[] = [];
   @Input() children: TreeTableItem[] = [];
-  @Input() childPropertyName: string = "children";
-  @Input() keyLinkName: string = "link";
+  @Input() childPropertyName: string = 'children';
+  @Input() keyLinkName: string = 'link';
   @Input() widthDefinitions: ColumnWidthDefinitions = {};
-  expandedItems: Set<any> = new Set();
-  expandedSubLevelItems: Set<any> = new Set();
+  expandedItems: Set<TreeTableItem> = new Set();
+  expandedSubLevelItems: Set<TreeTableItem> = new Set();
+  backgroundColors: string[] = [];
 
   constructor(private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit() {
     this.viewContainerRef.createEmbeddedView(this.template);
+    this.backgroundColors = this.calculateRowColors();
   }
 
   isExpanded(item: any): boolean {
@@ -69,7 +70,11 @@ export class TreeTableItemComponent implements OnInit {
   }
 
   getBackgroundColor(index: number): string {
-    return index % 2 !== 0 ? "#ffffff" : "#f3f4f4";
+    return index % 2 !== 0 ? '#ffffff' : '#f3f4f4';
+  }
+
+  calculateRowColors(): string[] {
+    return this.data.map((_, i) => this.getBackgroundColor(i));
   }
 
   onLinkClick(item: any) {
