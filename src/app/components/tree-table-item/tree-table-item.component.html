@@ -7,7 +7,7 @@
         [ngStyle]="{ 'background-color': backgroundColors[i] }"
       >
         <td
-          *ngFor="let key of keyDefinitions"
+          *ngFor="let key of displayedProperties"
           [style.width]="widthDefinitions[key]"
         >
           {{ item[key] }}
@@ -41,11 +41,11 @@
             [ngClass]="{
               'ly-tree-table-item__row--expanded': isSubLevelExpanded(child)
             }"
-            [ngStyle]="{ 'background-color': getBackgroundColor(i) }"
+            [ngStyle]="{ 'background-color': backgroundColors[i] }"
           >
             <td
               class="ly-tree-table-item__row-data ly-tree-table-item__row-data--link"
-              *ngFor="let childKey of keyDefinitions"
+              *ngFor="let childKey of displayedProperties"
               [style.width]="widthDefinitions[childKey]"
             >
               <ng-container
@@ -89,10 +89,10 @@
             <ng-container *ngFor="let subLevel of child[childPropertyName]">
               <tr
                 class="ly-tree-table-item__row ly-tree-table-item__row--third-level"
-                [ngStyle]="{ 'background-color': getBackgroundColor(i) }"
+                [ngStyle]="{ 'background-color': backgroundColors[i] }"
               >
                 <td
-                  *ngFor="let subLevelKey of keyDefinitions"
+                  *ngFor="let subLevelKey of displayedProperties"
                   [style.width]="widthDefinitions[subLevelKey]"
                 >
                   {{ subLevel[subLevelKey] }}

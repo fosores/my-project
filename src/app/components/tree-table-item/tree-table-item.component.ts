@@ -17,6 +17,9 @@ export interface TreeTableItem {
   children?: TreeTableItem[];
 }
 
+const EVEN_ROW_COLOR = '#f3f4f4';
+const ODD_ROW_COLOR = '#ffffff';
+
 @Component({
   selector: 'ly-tree-table-item',
   templateUrl: './tree-table-item.component.html',
@@ -29,7 +32,7 @@ export class TreeTableItemComponent implements OnInit {
 
   @Output() linkClicked = new EventEmitter<any>();
   @Input() data: TreeTableItem[] = [];
-  @Input() keyDefinitions: string[] = [];
+  @Input() displayedProperties: string[] = [];
   @Input() children: TreeTableItem[] = [];
   @Input() childPropertyName: string = 'children';
   @Input() keyLinkName: string = 'link';
@@ -45,15 +48,15 @@ export class TreeTableItemComponent implements OnInit {
     this.backgroundColors = this.calculateRowColors();
   }
 
-  isExpanded(item: any): boolean {
+  isExpanded(item: TreeTableItem): boolean {
     return this.expandedItems.has(item);
   }
 
-  isSubLevelExpanded(item: any) {
+  isSubLevelExpanded(item: TreeTableItem): boolean {
     return this.expandedSubLevelItems.has(item);
   }
 
-  expandToggle(item: any) {
+  expandToggle(item: TreeTableItem): void {
     if (this.isExpanded(item)) {
       this.expandedItems.delete(item);
     } else {
@@ -61,23 +64,21 @@ export class TreeTableItemComponent implements OnInit {
     }
   }
 
-  expandSubLevelToggle(item: any) {
-    if (this.isSubLevelExpanded(item)) {
-      this.expandedSubLevelItems.delete(item);
-    } else {
-      this.expandedSubLevelItems.add(item);
-    }
+  expandSubLevelToggle(item: TreeTableItem): void {
+    this.expandedSubLevelItems.has(item)
+      ? this.expandedSubLevelItems.delete(item)
+      : this.expandedSubLevelItems.add(item);
   }
 
-  getBackgroundColor(index: number): string {
-    return index % 2 !== 0 ? '#ffffff' : '#f3f4f4';
+  getBackgroundColor(rowIndex: number): string {
+    return rowIndex % 2 !== 0 ? ODD_ROW_COLOR : EVEN_ROW_COLOR;
   }
 
   calculateRowColors(): string[] {
     return this.data.map((_, i) => this.getBackgroundColor(i));
   }
 
-  onLinkClick(item: any) {
+  onLinkClick(item: TreeTableItem): void {
     this.linkClicked.emit(item);
   }
 }

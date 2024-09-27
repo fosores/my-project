@@ -1,6 +1,6 @@
 <ly-tree-table [headers]="headers" [actionHeader]="'Accion'">
   <ly-tree-table-item (linkClicked)="itemClick($event)" [childPropertyName]="'children'" [data]="data"
-      [keyDefinitions]="['module', 'services', 'link']"
+      [displayedProperties]="['module', 'services', 'link']"
       [widthDefinitions]="{ module: '30%', services: '60%', link: '10%' }" keyLinkName="link">
   </ly-tree-table-item>
 </ly-tree-table>
