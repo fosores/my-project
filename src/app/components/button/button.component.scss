@@ -1,0 +1,145 @@
+@import "../../../assets/scss/main.scss";
+
+:host {
+  --ly-button-height: 44px;
+  --ly-button-width--base: 270px;
+  --ly-button-width--small: 136px;
+  --ly-button-border-radius: 6px;
+  --ly-button-border-radius--after: var(--ly-border-radius-large);
+  --ly-button-font-size: var(--ly-font-size-md);
+  --ly-button-font-weight: var(--ly-font-weight-encode-sans-semibold);
+  --ly-button-text-color: var(--ly-white-color);
+  --ly-button-padding: var(--ly-padding-large-vertical);
+  --ly-button-background-color: var(--ly-red-color-100);
+  --ly-button-background-color--secondary: var(--ly-white-color);
+  --ly-button-background-color--black: var(--ly-black-color);
+  --ly-button-background-color--grey: var(--ly-gray-color-200);
+  --ly-button-text-color--secondary: var(--ly-red-color-100);
+  --ly-button-text-color--disabled: var(--ly-gray-color-100);
+  --ly-button-cursor--disabled: var(--ly-cursor-disabled);
+  --ly-button-border-color--disabled: var(--ly-gray-color-100);
+  --ly-button-border-size: 2px;
+  --ly-button-text-color-animated--secondary: var(--ly-black-color);
+  --ly-button-after-position: 2px;
+}
+
+.ly-button {
+  display: inline-block;
+  border: none;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  height: var(--ly-button-height);
+  border-radius: var(--ly-button-border-radius);
+
+  &__text {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: var(--ly-button-font-size);
+    font-weight: var(--ly-button-font-weight);
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    color: var(--ly-button-text-color);
+  }
+
+  &--primary,
+  &--secondary {
+    padding: var(--ly-button-padding);
+    background-color: var(--ly-button-background-color);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -60%;
+      height: 100%;
+      width: 60%;
+      background: linear-gradient(
+        90deg,
+        var(--ly-button-background-color) 0%,
+        var(--ly-button-background-color--black) 50%,
+        var(--ly-button-background-color) 100%
+      );
+      z-index: 0;
+    }
+
+    &--animated::before {
+      animation: gradient-progress 1s forwards;
+    }
+
+    &:disabled {
+      background-color: var(--ly-button-background-color--grey);
+
+      .ly-button__text {
+        color: var(--ly-button-text-color--disabled);
+      }
+    }
+  }
+
+  &--secondary {
+    background-color: var(--ly-button-background-color);
+
+    .ly-button__text {
+      color: var(--ly-button-text-color--secondary);
+    }
+
+    &--animated {
+      .ly-button__text {
+        color: var(--ly-button-text-color-animated--secondary);
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: var(--ly-button-after-position);
+      right: var(--ly-button-after-position);
+      bottom: var(--ly-button-after-position);
+      left: var(--ly-button-after-position);
+      border-radius: var(--ly-button-border-radius--after);
+      background-color: var(--ly-button-background-color--secondary);
+    }
+
+    &:disabled {
+      background-color: var(--ly-button-background-color--secondary);
+      border: var(--ly-button-border-size) solid
+        var(--ly-button-border-color--disabled);
+
+      .ly-button__text {
+        color: var(--ly-button-text-color--disabled);
+      }
+    }
+  }
+
+  &:disabled {
+    cursor: var(--ly-button-cursor--disabled);
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  &--base {
+    width: var(--ly-button-width--base);
+  }
+
+  &--small {
+    width: var(--ly-button-width--small);
+  }
+}
+
+@keyframes gradient-progress {
+  0% {
+    left: -60%;
+  }
+  100% {
+    left: 100%;
+  }
+}

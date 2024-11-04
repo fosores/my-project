@@ -1,0 +1,182 @@
+/*
+Vars
+-------------------------------------------------------
+@Library components LUCY 2
+-------------------------------------------------------
+*/
+
+:root {
+    /*-- @colors --*/
+    --ly-white-color: #fff;
+    --ly-black-color: #000;
+  
+    --ly-red-color-100: #c4161c;
+  
+    --ly-green-color-100: #2b7f24;
+  
+    --ly-blue-color-100: #517eab;
+  
+    --ly-brown-color-100: #a68352;
+  
+    --ly-gray-color-100: #969495;
+    --ly-gray-color-200: #eaeaea;
+    --ly-gray-color-300: #f3f5f4;
+  
+  
+    --ly-success-color: var(--ly-green-color-100);
+    --ly-info-color: var(--ly-blue-color-100);
+    --ly-alert-color: var(--ly-brown-color-100);
+  
+  
+    --ly-segment-exlusive: #231f20;
+    --ly-segment-premium: #A38247;
+    --ly-segment-start: #f58220;
+    --ly-segment-retail: #c4161c;
+    --ly-segment-salaries: #635843;
+  
+  
+    --ly-tab-focus: var(--ly-gray-color-100);
+  
+  
+    //** Global textual link color.
+    --ly-link-color: var(--ly-blue-color-100);
+    --ly-link-decoration: none;
+    --ly-link-hover-color: var(--ly-blue-color-200);
+    --ly-link-hover-decoration: none;
+  
+    //== Components
+    //
+    //
+  
+    --ly-padding-small: 8px;
+    --ly-padding-base: 16px;
+    --ly-padding-large: 32px;
+  
+    --ly-padding-base-vertical: 6px;
+    --ly-padding-base-horizontal: 12px;
+  
+    --ly-padding-large-vertical: 12px;
+    --ly-padding-large-horizontal: 16px;
+  
+    --ly-padding-small-vertical: 5px;
+    --ly-padding-small-horizontal: 10px;
+  
+    --ly-padding-xs-vertical: 1px;
+    --ly-padding-xs-horizontal: 5px;
+  
+  
+    --ly-border-width: 1px;
+  
+    --ly-border-radius-none: none;
+    --ly-border-radius-base: 3px;
+    --ly-border-radius-large: 4px;
+    --ly-border-radius-xlarge: 8px;
+    --ly-border-radius-small: 2px;
+  
+  
+    --ly-cursor-disabled: not-allowed;
+    --ly-text-muted: #6c757d;
+  
+  
+    --ly-input-btn-focus-width: .2rem;
+  
+    --ly-button-transition: color .15s ease-in-out,
+      background-color .15s ease-in-out,
+      border-color .15s ease-in-out,
+      box-shadow .15s ease-in-out;
+  
+  
+  
+    // Form
+    //
+    --ly-field-text-margin-top: .25rem;
+    --ly-field-text-margin-bottom: .5rem;
+  
+    // tabs
+    //
+    --ly-transition-base: all .2s ease-in-out;
+    --ly-transition-fade: opacity .15s linear;
+  
+  
+    /*-- @body --*/
+    --ly-body-background-color: Var(--ly-white-color);
+  
+    /*-- fonts family --*/
+    --ly-family-font-base: Helvetica Neue, Helvetica, Arial, sns-serif;
+    --ly-family-font-encode-sans: 'Encode Sans';
+  
+    --ly-family-root: var(--ly-family-font-encode-sans);
+  
+    /*-- font size --*/
+    --ly-font-size-3-5xl: 3rem; //48px
+    --ly-font-size-3xl: 2.5rem; //40px
+    --ly-font-size-2xl: 2.25rem; //36px
+    --ly-font-size-xl: 2rem; //32px
+    --ly-font-size-lg: 1.5rem; //24px
+    --ly-font-size-md: 1rem; //16px root
+    --ly-font-size-sm: 0.875rem; //14px
+    --ly-font-size-xs: 0.75rem; //12px
+  
+    --ly-font-size-base: var(--ly-font-size-md);
+  
+  
+    /*-- font-weight encode-sans --*/
+    --ly-font-weight-encode-sans-regular: 400;
+    --ly-font-weight-encode-sans-medium: 500;
+    --ly-font-weight-encode-sans-semibold: 600;
+    --ly-font-weight-encode-sans-bold: 700;
+  
+    --ly-font-weight-base: var(--ly-font-weight-encode-sans-regular);
+  
+    /*-- Line height --*/
+    --ly-line-height-sm: 1.3;
+    --ly-line-height-md: 1.5;
+    --ly-line-height-lg: 1.7;
+  
+    --ly-line-height-base: var(--ly-line-height-md);
+  
+    /*-- text color --*/
+    --ly-body-text-color: var(--ly-gray-color-100);
+  
+    /*-- Spacers --*/
+    --ly-spacer-xs: 0.25rem; //4px
+    --ly-spacer-sm: 0.5rem; //8px
+    --ly-spacer-md: 1rem; //16px
+    --ly-spacer-lg: 1.5rem; //24px
+    --ly-spacer-xl: 2rem; //32px
+    --ly-spacer-2xl: 3rem; //48px
+    --ly-spacer-3xl: 4rem; //64px
+  
+  
+    /*-- Layouts Spacers --*/
+    --ly-layout-spacer-sm: 0.5rem;
+    --ly-layout-spacer-md: 1rem;
+    --ly-layout-spacer-lg: 1.5rem;
+    --ly-layout-spacer-xl: 2rem;
+    --ly-layout-spacer-2xl: 2.5rem;
+  
+    /*-- Margins --*/
+    --ly-margin-xs: 0.75rem;
+    --ly-margin-sm: 0.875rem;
+    --ly-margin-md: 1rem;
+  
+  
+    // colors alerts
+    --ly-color-success: #00A650;
+    --ly-background-success: #F4F9F2;
+    --ly-color-info: #1C5B90;
+    --ly-background-info: #DFEDF4;
+    --ly-color-warning: #96722E;
+    --ly-background-warning: #F8F4D5;
+    --ly-color-danger: #C4161C;
+    --ly-background-danger: #F7F0F0;
+  
+    // backdrop
+    --ly-backdrop-background: rgba(0, 0, 0, 0.6);
+  
+  }
+  
+  //:root[theme="multipay"] {
+  //
+  //}
+  

@@ -1,0 +1,17 @@
+<div
+  class="ly-spinner"
+  output="status"
+  aria-live="polite"
+  [attr.aria-label]="loadingAria"
+>
+  <svg class="ly-spinner__svg" viewBox="0 0 90 90" focusable="false">
+    <circle class="ly-spinner__svg-circle-background" cx="45" cy="45" r="40" />
+    <circle
+      class="ly-spinner__svg-circle-background--fill"
+      cx="45"
+      cy="45"
+      r="40"
+      [ngStyle]="{ 'animation-duration': animationDuration + 's' }"
+    />
+  </svg>
+</div>

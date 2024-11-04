@@ -1,0 +1,6 @@
+<button [tabindex]="tabIndex" 
+    class="ly-button {{ type() }} {{ size() }} {{_animatedClass}}" [disabled]="_disabled" #button>
+    <span class="ly-button__text" #buttonText>
+        <ng-content></ng-content>
+    </span>
+</button>

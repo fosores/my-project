@@ -1,0 +1,30 @@
+.ly-spinner {
+  &__svg {
+    width: 90px;
+    height: 90px;
+    &-circle-background {
+      stroke: #969495;
+      stroke-width: 4px;
+      fill: none;
+      &--fill {
+        stroke: #c4161c;
+        stroke-width: 4px;
+        stroke-dasharray: 251;
+        stroke-dashoffset: 251;
+        animation: fillCircle 5s linear infinite;
+        transform-origin: center;
+        transform: rotate(-90deg);
+        fill: none;
+      }
+    }
+  }
+
+  @keyframes fillCircle {
+    0% {
+      stroke-dashoffset: 251;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+}
