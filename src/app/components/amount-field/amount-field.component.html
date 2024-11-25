@@ -1,0 +1,15 @@
+<div class="ly-amount-field">
+  <div class="ly-amount-field__visible-value">
+    <span>INT: {{ visibleValueIntegers() }}</span>
+    <br />
+    <span>DEC: {{ visibleValueDecimals() }}</span>
+  </div>
+  <input
+    #input
+    type="number"
+    [value]="value()"
+    [disabled]="disabled()"
+    (input)="handleInput($event)"
+    (blur)="handleBlur()"
+  />
+</div>
