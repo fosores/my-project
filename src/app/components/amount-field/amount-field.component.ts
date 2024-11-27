@@ -1,10 +1,28 @@
-import { Component, ElementRef, forwardRef, signal, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Component,
+  ElementRef,
+  forwardRef,
+  Inject,
+  Injector,
+  INJECTOR,
+  OnInit,
+  Optional,
+  Self,
+  signal,
+  ViewChild,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  NgControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-amount-field',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './amount-field.component.html',
   styleUrls: ['./amount-field.component.scss'],
   providers: [
@@ -17,11 +35,12 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class AmountFieldComponent implements ControlValueAccessor {
   @ViewChild('input', { static: false }) inputField!: ElementRef;
-
-  value = signal<number>(0); // Default value is 0
+  isError = false;
+  currency = signal<string>('$');
+  value: number = 0;
   disabled = signal<boolean>(false);
-  visibleValueIntegers = signal<string>('0'); // Default integer part
-  visibleValueDecimals = signal<string>('00'); // Default decimal part
+  visibleValueIntegers = signal<string>('0');
+  visibleValueDecimals = signal<string>('00');
 
   private onTouched?(): void {}
   private onChange?(_: unknown): void {}
@@ -30,9 +49,37 @@ export class AmountFieldComponent implements ControlValueAccessor {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
+  handleFocus(): void {
+    this.inputField.nativeElement.focus();
+  }
+
   protected handleInput(event: Event): void {
+    // TODO MOVE CURSOR TO THE END OF INPUT WHEN DELETING AND HAVING DECIMALS
     const input = event.target as HTMLInputElement;
-    console.log('EVENT', input.value)
+    console.log('EVENT', input.value);
+    if (!input.value) {
+      this.value = 0;
+    }
+    //DETECTS IF THE VALUE HAS ALREADY 2 DECIMALS TO PREVENT FURTHER ADDING
+    const twoDecimalsRegEx = /^-?\d*(\.\d{0,2})?$/;
+    if (!twoDecimalsRegEx.test(input.value)) {
+      const decimalIndex = input.value.indexOf('.');
+
+      // If there are already two decimals, replace the last one
+      if (decimalIndex !== -1 && input.value.length > decimalIndex + 2) {
+        const newValue =
+          input.value.slice(0, decimalIndex + 2) +
+          input.value[input.value.length - 1];
+        this.inputField.nativeElement.value = newValue;
+      } else {
+        // Otherwise, remove the last invalid character
+        this.inputField.nativeElement.value = input.value.slice(0, -1);
+      }
+    }
+
+    if (!input.value) {
+      input.value = '0';
+    }
     let rawValue = input.value.replace(/[^0-9.]/g, '').trim();
 
     const decimalIndex = rawValue.indexOf('.');
@@ -47,16 +94,23 @@ export class AmountFieldComponent implements ControlValueAccessor {
       }
     }
 
-    const value = rawValue === '' ? 0 : parseFloat(rawValue); // Default to 0 if empty
+    const value = rawValue === '' ? 0 : parseFloat(rawValue);
 
-    this.value.set(value);
     this.updateVisibleParts(value);
 
+    const visibleIntegers = this.visibleValueIntegers().replace(/\./g, '');
+    const visibleDecimals =
+      this.visibleValueDecimals() !== '00'
+        ? this.visibleValueDecimals()
+        : undefined;
+    const unformattedValue = visibleDecimals
+      ? parseFloat(`${visibleIntegers}.${visibleDecimals}`)
+      : parseFloat(visibleIntegers);
+    console.log('unformattedValue', unformattedValue);
+    this.value = unformattedValue;
     if (this.onChange) {
       this.onChange(value);
     }
-    console.log('VALOR', value)
-    // this.inputField.nativeElement.value = value;
   }
 
   protected handleBlur(): void {
@@ -76,7 +130,7 @@ export class AmountFieldComponent implements ControlValueAccessor {
 
   writeValue(valueToWrite: number | null): void {
     const validValue = valueToWrite ?? 0;
-    this.value.set(validValue);
+    this.value = validValue;
     this.updateVisibleParts(validValue);
   }
 
