@@ -45,8 +45,8 @@ export class AmountFieldComponent
   value: number = 0;
   @Input() disable: boolean = false;
   isDisabled: boolean = false;
-  visibleValueIntegers = signal<string>('0');
-  visibleValueDecimals = signal<string>('00');
+  visibleValueIntegers: string = '0';
+  visibleValueDecimals: string = '00';
 
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
@@ -84,7 +84,6 @@ export class AmountFieldComponent
   }
 
   protected handleInput(event: Event): void {
-    // TODO MOVE CURSOR TO THE END OF INPUT WHEN DELETING AND HAVING DECIMALS
     const input = event.target as HTMLInputElement;
     console.log('EVENT', input.value);
     if (!input.value) {
@@ -95,14 +94,12 @@ export class AmountFieldComponent
     if (!twoDecimalsRegEx.test(input.value)) {
       const decimalIndex = input.value.indexOf('.');
 
-      // If there are already two decimals, replace the last one
       if (decimalIndex !== -1 && input.value.length > decimalIndex + 2) {
         const newValue =
           input.value.slice(0, decimalIndex + 2) +
           input.value[input.value.length - 1];
         this.inputField.nativeElement.value = newValue;
       } else {
-        // Otherwise, remove the last invalid character
         this.inputField.nativeElement.value = input.value.slice(0, -1);
       }
     }
@@ -128,10 +125,10 @@ export class AmountFieldComponent
 
     this.updateVisibleParts(value);
 
-    const visibleIntegers = this.visibleValueIntegers().replace(/\./g, '');
+    const visibleIntegers = this.visibleValueIntegers.replace(/\./g, '');
     const visibleDecimals =
-      this.visibleValueDecimals() !== '00'
-        ? this.visibleValueDecimals()
+      this.visibleValueDecimals !== '00'
+        ? this.visibleValueDecimals
         : undefined;
     const unformattedValue = visibleDecimals
       ? parseFloat(`${visibleIntegers}.${visibleDecimals}`)
@@ -151,10 +148,9 @@ export class AmountFieldComponent
   private updateVisibleParts(amount: number): void {
     const validAmount = amount || 0;
     const [integers, decimals] = validAmount.toFixed(2).split('.');
-    this.visibleValueIntegers.set(
-      integers.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-    );
-    this.visibleValueDecimals.set(decimals);
+    this.visibleValueIntegers = integers.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    this.visibleValueDecimals = decimals;
   }
 
   writeValue(valueToWrite: number | null): void {
