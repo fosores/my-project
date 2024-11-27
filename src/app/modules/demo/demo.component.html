@@ -1,5 +1,8 @@
 <div style="margin: 50px">
   <form [formGroup]="form">
-    <app-amount-field formControlName="amount"></app-amount-field>
+    <app-amount-field
+      formControlName="amount"
+      [disable]="false"
+    ></app-amount-field>
   </form>
 </div>

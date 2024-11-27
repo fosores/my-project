@@ -1,18 +1,19 @@
+import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   forwardRef,
-  Inject,
   Injector,
-  INJECTOR,
-  OnInit,
-  Optional,
-  Self,
+  Input,
   signal,
   ViewChild,
 } from '@angular/core';
 import {
   ControlValueAccessor,
+  FormControl,
   FormsModule,
   NG_VALUE_ACCESSOR,
   NgControl,
@@ -22,9 +23,10 @@ import {
 @Component({
   selector: 'app-amount-field',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './amount-field.component.html',
   styleUrls: ['./amount-field.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -33,17 +35,45 @@ import {
     },
   ],
 })
-export class AmountFieldComponent implements ControlValueAccessor {
+export class AmountFieldComponent
+  implements ControlValueAccessor, AfterViewInit
+{
   @ViewChild('input', { static: false }) inputField!: ElementRef;
   isError = false;
+  _control!: FormControl;
   currency = signal<string>('$');
   value: number = 0;
-  disabled = signal<boolean>(false);
+  @Input() disable: boolean = false;
+  isDisabled: boolean = false;
   visibleValueIntegers = signal<string>('0');
   visibleValueDecimals = signal<string>('00');
 
-  private onTouched?(): void {}
-  private onChange?(_: unknown): void {}
+  private onChange: (value: any) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  constructor(public injector: Injector, private cd: ChangeDetectorRef) {}
+
+  ngAfterViewInit(): void {
+    const ngControl: NgControl = this.injector.get(NgControl);
+    if (ngControl) {
+      this._control = ngControl.control as FormControl;
+    }
+    this.detectOnError();
+    this.cd.detectChanges();
+  }
+
+  detectOnError(): void {
+    this._control.valueChanges.subscribe(() => {
+      this.detectError();
+    });
+  }
+
+  detectError(): void {
+    if (this._control) {
+      const { errors, touched } = this._control;
+      this.isError = !!errors && touched;
+    }
+  }
 
   formatAmount(amount: number): string {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -114,9 +144,8 @@ export class AmountFieldComponent implements ControlValueAccessor {
   }
 
   protected handleBlur(): void {
-    if (this.onTouched) {
-      this.onTouched();
-    }
+    this.onTouched();
+    this.cd.detectChanges();
   }
 
   private updateVisibleParts(amount: number): void {
@@ -142,7 +171,8 @@ export class AmountFieldComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled.set(isDisabled);
+  setDisabledState?(): void {
+    this.isDisabled = this.disable;
+    this.cd.markForCheck();
   }
 }

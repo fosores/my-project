@@ -1,5 +1,11 @@
 <div class="ly-amount-field" (click)="handleFocus()">
-  <div class="ly-amount-field__visible-value">
+  <div
+    class="ly-amount-field__visible-value"
+    [ngClass]="{
+      'ly-amount-field__visible-value--error': isError,
+      'ly-amount-field__visible-value--disabled': isDisabled
+    }"
+  >
     <div class="ly-amount-field__visible-value-currency">
       {{ currency() }}
     </div>
@@ -15,7 +21,7 @@
     #input
     type="number"
     [(ngModel)]="value"
-    [disabled]="disabled()"
+    [disabled]="isDisabled"
     (input)="handleInput($event)"
     (blur)="handleBlur()"
   />

@@ -3,24 +3,32 @@
     display: flex;
     align-items: flex-start;
     gap: 3px;
+
     &-currency {
       font-size: 40px;
       font-weight: 500;
       display: flex;
-      align-items: center; // Keep the integer centered vertically
+      align-items: center;
     }
 
     &-integer {
       font-size: 40px;
       font-weight: 500;
       display: flex;
-      align-items: center; // Keep the integer centered vertically
+      align-items: center;
     }
 
     &-decimals {
       font-size: 20px;
       font-weight: 500;
-      align-self: flex-start; // Align decimals individually to the top
+      align-self: flex-start;
+    }
+
+    &--error {
+      color: rgb(230, 0, 0);
+    }
+    &--disabled {
+      color: rgb(170, 170, 170);
     }
   }
 }

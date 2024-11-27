@@ -42,7 +42,7 @@ export class DemoComponent implements OnInit {
     this.form.valueChanges.subscribe({
       next: () => {
         console.log(this.form.value);
-        console.log(this.form.valid);
+        console.log('Touch', this.form.touched);
       },
     });
   }
