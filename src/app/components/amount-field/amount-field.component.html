@@ -19,10 +19,9 @@
   <input
     style="opacity: 0.8"
     #input
-    type="number"
-    [(ngModel)]="value"
+    type="text"         
     [disabled]="isDisabled"
-    (input)="handleInput($event)"
+    (input)="handleInput($event)" 
     (blur)="handleBlur()"
   />
 </div>

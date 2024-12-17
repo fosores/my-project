@@ -85,15 +85,19 @@ export class AmountFieldComponent
 
   protected handleInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    console.log('EVENT', input.value);
+    // Convert any commas to periods before proceeding
+    input.value = input.value.replace(/,/g, '.');
+  
+    console.log('EVENT', event);
     if (!input.value) {
       this.value = 0;
     }
-    //DETECTS IF THE VALUE HAS ALREADY 2 DECIMALS TO PREVENT FURTHER ADDING
+  
+    // DETECTS IF THE VALUE HAS ALREADY 2 DECIMALS TO PREVENT FURTHER ADDING
     const twoDecimalsRegEx = /^-?\d*(\.\d{0,2})?$/;
     if (!twoDecimalsRegEx.test(input.value)) {
       const decimalIndex = input.value.indexOf('.');
-
+  
       if (decimalIndex !== -1 && input.value.length > decimalIndex + 2) {
         const newValue =
           input.value.slice(0, decimalIndex + 2) +
@@ -103,38 +107,37 @@ export class AmountFieldComponent
         this.inputField.nativeElement.value = input.value.slice(0, -1);
       }
     }
-
+  
     if (!input.value) {
       input.value = '0';
     }
+  
     let rawValue = input.value.replace(/[^0-9.]/g, '').trim();
-
+  
     const decimalIndex = rawValue.indexOf('.');
     if (decimalIndex !== -1) {
       const [integers, decimals] = rawValue.split('.');
-      if (decimals) {
-        if (decimals.length > 2) {
-          rawValue = `${integers}.${decimals.substring(0, 1)}${decimals.slice(
-            -1
-          )}`;
-        }
+      if (decimals && decimals.length > 2) {
+        rawValue = `${integers}.${decimals.substring(0, 1)}${decimals.slice(-1)}`;
       }
     }
-
+  
     const value = rawValue === '' ? 0 : parseFloat(rawValue);
-
+  
     this.updateVisibleParts(value);
-
+  
     const visibleIntegers = this.visibleValueIntegers.replace(/\./g, '');
-    const visibleDecimals =
-      this.visibleValueDecimals !== '00'
-        ? this.visibleValueDecimals
-        : undefined;
+    const visibleDecimals = this.visibleValueDecimals !== '00'
+      ? this.visibleValueDecimals
+      : undefined;
+  
     const unformattedValue = visibleDecimals
       ? parseFloat(`${visibleIntegers}.${visibleDecimals}`)
       : parseFloat(visibleIntegers);
+  
     console.log('unformattedValue', unformattedValue);
     this.value = unformattedValue;
+    
     if (this.onChange) {
       this.onChange(value);
     }
