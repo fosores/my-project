@@ -106,6 +106,7 @@ export class AmountFieldComponent
   
     console.log('modifyingIntegers:', modifyingIntegers);
     console.log('modifyingDecimals:', modifyingDecimals);
+  
     if (!input.value) {
       this.value = 0;
     }
@@ -131,10 +132,27 @@ export class AmountFieldComponent
   
     let rawValue = input.value.replace(/[^0-9.]/g, '').trim();
   
+    // Si se están modificando enteros, verificar que no pasen de 9 dígitos
+    // Ignorando ceros a la izquierda
+    if (modifyingIntegers) {
+      const [integerPart] = rawValue.split('.');
+      // Eliminar ceros a la izquierda para el conteo
+      const integerPartWithoutLeadingZeros = integerPart.replace(/^0+/, '');
+      
+      if (integerPartWithoutLeadingZeros.length > 9) {
+        // Si la parte entera sin ceros a la izquierda tiene más de 9 dígitos
+        // revertir el último caracter ingresado
+        input.value = input.value.slice(0, -1);
+        // Reprocesar el rawValue después de revertir
+        rawValue = input.value.replace(/[^0-9.]/g, '').trim();
+      }
+    }
+  
     const decimalIdx = rawValue.indexOf('.');
     if (decimalIdx !== -1) {
       const [integers, decimals] = rawValue.split('.');
       if (decimals && decimals.length > 2) {
+        // Limitar a 2 decimales
         rawValue = `${integers}.${decimals.substring(0, 1)}${decimals.slice(-1)}`;
       }
     }
