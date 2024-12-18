@@ -85,26 +85,43 @@ export class AmountFieldComponent
 
   protected handleInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    // Convert any commas to periods before proceeding
+    
+    // Convertir comas en puntos
     input.value = input.value.replace(/,/g, '.');
   
-    console.log('EVENT', event);
+    // Obtener la posición actual del cursor
+    const selectionStart = input.selectionStart ?? input.value.length;
+    
+    // Ubicar el índice del punto decimal
+    const decimalIndex = input.value.indexOf('.');
+  
+    // Determinar si se modifican enteros o decimales
+    let modifyingIntegers = true;
+    let modifyingDecimals = false;
+  
+    if (decimalIndex !== -1 && selectionStart > decimalIndex) {
+      modifyingIntegers = false;
+      modifyingDecimals = true;
+    }
+  
+    console.log('modifyingIntegers:', modifyingIntegers);
+    console.log('modifyingDecimals:', modifyingDecimals);
     if (!input.value) {
       this.value = 0;
     }
   
-    // DETECTS IF THE VALUE HAS ALREADY 2 DECIMALS TO PREVENT FURTHER ADDING
     const twoDecimalsRegEx = /^-?\d*(\.\d{0,2})?$/;
     if (!twoDecimalsRegEx.test(input.value)) {
-      const decimalIndex = input.value.indexOf('.');
-  
-      if (decimalIndex !== -1 && input.value.length > decimalIndex + 2) {
+      const dIndex = input.value.indexOf('.');
+      if (dIndex !== -1 && input.value.length > dIndex + 2) {
         const newValue =
-          input.value.slice(0, decimalIndex + 2) +
+          input.value.slice(0, dIndex + 2) +
           input.value[input.value.length - 1];
         this.inputField.nativeElement.value = newValue;
+        input.value = newValue;
       } else {
         this.inputField.nativeElement.value = input.value.slice(0, -1);
+        input.value = input.value.slice(0, -1);
       }
     }
   
@@ -114,8 +131,8 @@ export class AmountFieldComponent
   
     let rawValue = input.value.replace(/[^0-9.]/g, '').trim();
   
-    const decimalIndex = rawValue.indexOf('.');
-    if (decimalIndex !== -1) {
+    const decimalIdx = rawValue.indexOf('.');
+    if (decimalIdx !== -1) {
       const [integers, decimals] = rawValue.split('.');
       if (decimals && decimals.length > 2) {
         rawValue = `${integers}.${decimals.substring(0, 1)}${decimals.slice(-1)}`;
@@ -137,7 +154,7 @@ export class AmountFieldComponent
   
     console.log('unformattedValue', unformattedValue);
     this.value = unformattedValue;
-    
+  
     if (this.onChange) {
       this.onChange(value);
     }
