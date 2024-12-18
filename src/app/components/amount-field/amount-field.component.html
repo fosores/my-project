@@ -2,12 +2,12 @@
   <div
     class="ly-amount-field__visible-value"
     [ngClass]="{
-      'ly-amount-field__visible-value--error': isError,
-      'ly-amount-field__visible-value--disabled': isDisabled
+      'ly-amount-field__visible-value--error': _isError,
+      'ly-amount-field__visible-value--disabled': _isDisabled
     }"
   >
     <div class="ly-amount-field__visible-value-currency">
-      {{ currency() }}
+      {{ _currency }}
     </div>
     <div class="ly-amount-field__visible-value-integer">
       {{ visibleValueIntegers }}
@@ -17,11 +17,12 @@
     </div>
   </div>
   <input
-    style="opacity: 0.8; height: 50px; width: 350px;"
+    style="opacity: 0.8; height: 50px; width: 350px"
     #input
-    type="text"         
-    [disabled]="isDisabled"
-    (input)="handleInput($event)" 
+    type="text"
+    [disabled]="_isDisabled"
+    [readonly]="_readOnly"
+    (input)="handleInput($event)"
     (blur)="handleBlur()"
   />
 </div>

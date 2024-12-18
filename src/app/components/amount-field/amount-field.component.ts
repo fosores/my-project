@@ -8,7 +8,6 @@ import {
   forwardRef,
   Injector,
   Input,
-  signal,
   ViewChild,
 } from '@angular/core';
 import {
@@ -19,6 +18,11 @@ import {
   NgControl,
   ReactiveFormsModule,
 } from '@angular/forms';
+
+const currencies = {
+  pesos: ['$'],
+  dollars: ['U$S'],
+};
 
 @Component({
   selector: 'app-amount-field',
@@ -39,12 +43,21 @@ export class AmountFieldComponent
   implements ControlValueAccessor, AfterViewInit
 {
   @ViewChild('input', { static: false }) inputField!: ElementRef;
-  isError = false;
+  _isError = false;
   _control!: FormControl;
-  currency = signal<string>('$');
-  value: number = 0;
+  @Input() set currency(value: keyof typeof currencies) {
+    this._currency = (currencies[value] || []).join(' ') + ' ';
+  }
+  _currency = '$ ';
   @Input() disable: boolean = false;
-  isDisabled: boolean = false;
+  _isDisabled: boolean = false;
+  @Input() set readOnly(value: boolean) {
+    this._readOnly = value;
+  }
+  _readOnly: boolean = false;
+  @Input() maxIntegerLength: number = 9;
+
+  value: number = 0;
   visibleValueIntegers: string = '0';
   visibleValueDecimals: string = '00';
 
@@ -71,7 +84,7 @@ export class AmountFieldComponent
   detectError(): void {
     if (this._control) {
       const { errors, touched } = this._control;
-      this.isError = !!errors && touched;
+      this._isError = !!errors && touched;
     }
   }
 
@@ -85,32 +98,32 @@ export class AmountFieldComponent
 
   protected handleInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    
+
     // Convertir comas en puntos
     input.value = input.value.replace(/,/g, '.');
-  
+
     // Obtener la posición actual del cursor
     const selectionStart = input.selectionStart ?? input.value.length;
-    
+
     // Ubicar el índice del punto decimal
     const decimalIndex = input.value.indexOf('.');
-  
+
     // Determinar si se modifican enteros o decimales
     let modifyingIntegers = true;
     let modifyingDecimals = false;
-  
+
     if (decimalIndex !== -1 && selectionStart > decimalIndex) {
       modifyingIntegers = false;
       modifyingDecimals = true;
     }
-  
+
     console.log('modifyingIntegers:', modifyingIntegers);
     console.log('modifyingDecimals:', modifyingDecimals);
-  
+
     if (!input.value) {
       this.value = 0;
     }
-  
+
     const twoDecimalsRegEx = /^-?\d*(\.\d{0,2})?$/;
     if (!twoDecimalsRegEx.test(input.value)) {
       const dIndex = input.value.indexOf('.');
@@ -125,54 +138,50 @@ export class AmountFieldComponent
         input.value = input.value.slice(0, -1);
       }
     }
-  
+
     if (!input.value) {
       input.value = '0';
     }
-  
+
     let rawValue = input.value.replace(/[^0-9.]/g, '').trim();
-  
-    // Si se están modificando enteros, verificar que no pasen de 9 dígitos
-    // Ignorando ceros a la izquierda
+
     if (modifyingIntegers) {
       const [integerPart] = rawValue.split('.');
-      // Eliminar ceros a la izquierda para el conteo
       const integerPartWithoutLeadingZeros = integerPart.replace(/^0+/, '');
-      
-      if (integerPartWithoutLeadingZeros.length > 9) {
-        // Si la parte entera sin ceros a la izquierda tiene más de 9 dígitos
-        // revertir el último caracter ingresado
+
+      if (integerPartWithoutLeadingZeros.length > this.maxIntegerLength) {
         input.value = input.value.slice(0, -1);
-        // Reprocesar el rawValue después de revertir
         rawValue = input.value.replace(/[^0-9.]/g, '').trim();
       }
     }
-  
+
     const decimalIdx = rawValue.indexOf('.');
     if (decimalIdx !== -1) {
       const [integers, decimals] = rawValue.split('.');
       if (decimals && decimals.length > 2) {
-        // Limitar a 2 decimales
-        rawValue = `${integers}.${decimals.substring(0, 1)}${decimals.slice(-1)}`;
+        rawValue = `${integers}.${decimals.substring(0, 1)}${decimals.slice(
+          -1
+        )}`;
       }
     }
-  
+
     const value = rawValue === '' ? 0 : parseFloat(rawValue);
-  
+
     this.updateVisibleParts(value);
-  
+
     const visibleIntegers = this.visibleValueIntegers.replace(/\./g, '');
-    const visibleDecimals = this.visibleValueDecimals !== '00'
-      ? this.visibleValueDecimals
-      : undefined;
-  
+    const visibleDecimals =
+      this.visibleValueDecimals !== '00'
+        ? this.visibleValueDecimals
+        : undefined;
+
     const unformattedValue = visibleDecimals
       ? parseFloat(`${visibleIntegers}.${visibleDecimals}`)
       : parseFloat(visibleIntegers);
-  
+
     console.log('unformattedValue', unformattedValue);
     this.value = unformattedValue;
-  
+
     if (this.onChange) {
       this.onChange(value);
     }
@@ -205,8 +214,8 @@ export class AmountFieldComponent
     this.onTouched = fn;
   }
 
-  setDisabledState?(): void {
-    this.isDisabled = this.disable;
+  setDisabledState(): void {
+    this._isDisabled = this.disable;
     this.cd.markForCheck();
   }
 }
