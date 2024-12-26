@@ -1,7 +1,7 @@
 .ly-amount-field {
   &__visible-value {
     display: flex;
-    align-items: flex-start;
+    width: fit-content;
     gap: 3px;
 
     &-currency {

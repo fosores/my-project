@@ -43,6 +43,7 @@ export class AmountFieldComponent
   implements ControlValueAccessor, AfterViewInit
 {
   @ViewChild('input', { static: false }) inputField!: ElementRef;
+  @ViewChild('visibleValue', { static: false }) visibleValue!: ElementRef;
   _isError = false;
   _control!: FormControl;
   @Input() set currency(value: keyof typeof currencies) {
@@ -96,8 +97,38 @@ export class AmountFieldComponent
     this.inputField.nativeElement.focus();
   }
 
+  private getInputWidth(): boolean {
+    // Retorna el ancho del input
+    const inputWidth =
+      this.inputField.nativeElement.getBoundingClientRect().width;
+    const visibleValueWidth =
+      this.visibleValue.nativeElement.getBoundingClientRect().width;
+    console.log('Ancho Input', inputWidth);
+    console.log('Ancho visibleValue', visibleValueWidth);
+
+    return visibleValueWidth > inputWidth;
+  }
+
+  resizeAmountFont() {
+    const maxIterations = 10; // Limitar las iteraciones para evitar bucles infinitos
+    let iteration = 0;
+
+    while (this.getInputWidth() && iteration < maxIterations) {
+      console.log('Soy más ancho que el input');
+      // Reducir el tamaño de la fuente o ajustar la visibilidad
+      const currentFontSize = parseFloat(
+        window.getComputedStyle(this.visibleValue.nativeElement).fontSize
+      );
+      this.visibleValue.nativeElement.style.fontSize = `${
+        currentFontSize - 1
+      }px`;
+      iteration++;
+    }
+  }
+
   protected handleInput(event: Event): void {
     const input = event.target as HTMLInputElement;
+    this.resizeAmountFont();
 
     // Convertir comas en puntos
     input.value = input.value.replace(/,/g, '.');
@@ -116,9 +147,6 @@ export class AmountFieldComponent
       modifyingIntegers = false;
       modifyingDecimals = true;
     }
-
-    console.log('modifyingIntegers:', modifyingIntegers);
-    console.log('modifyingDecimals:', modifyingDecimals);
 
     if (!input.value) {
       this.value = 0;

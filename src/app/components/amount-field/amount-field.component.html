@@ -1,5 +1,6 @@
 <div class="ly-amount-field" (click)="handleFocus()">
   <div
+    #visibleValue
     class="ly-amount-field__visible-value"
     [ngClass]="{
       'ly-amount-field__visible-value--error': _isError,
@@ -17,7 +18,7 @@
     </div>
   </div>
   <input
-    style="opacity: 0.8; height: 50px; width: 350px"
+    style="opacity: 0.8; height: 50px; width: 200px"
     #input
     type="text"
     [disabled]="_isDisabled"
